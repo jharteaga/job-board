@@ -2,6 +2,9 @@ const dotenv = require('dotenv')
 const morgan = require('morgan')
 const express = require('express')
 
+const { connect } = require('./src/utils/db')
+const { signup } = require('./src/utils/auth')
+
 const app = express()
 
 dotenv.config({ path: './.env' })
@@ -9,10 +12,17 @@ dotenv.config({ path: './.env' })
 app.use(express.json())
 app.use(morgan('dev'))
 
+app.post('/auth/signup', signup)
+
 app.get('/', (req, res) => {
     res.send('Server up and running')
 })
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server running in http://localhost:${process.env.PORT}`)
+app.listen(process.env.PORT, async () => {
+    try {
+        await connect()
+        console.log(`Server running in http://localhost:${process.env.PORT}`)
+    } catch (err) {
+        console.error('Error starting server: ', err)
+    }
 })
