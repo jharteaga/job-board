@@ -17,7 +17,8 @@ const employeeSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        required: false
+        required: false,
+        default: new Date()
     },
     role: {
         type: String,
@@ -25,11 +26,15 @@ const employeeSchema = new Schema({
         default: 'employee'
     },
     socialMedia: {
-        type: Array,
+        type: Map,
         required: false
     },
     portfolio: {
         type: String,
+        required: false
+    },
+    resume: {
+        type: Buffer,
         required: false
     }
 })

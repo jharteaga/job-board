@@ -14,20 +14,20 @@ const signup = async (req, res) => {
     const { name, email, password, role } = req.body
 
     if (!name || !email || !password) {
-        return res.status(400).send({ message: 'Required fields needed' })
+        return res.status(400).json({ message: 'Required fields needed' })
     }
 
     try {
         if (role === 'employee') {
             const user = await Employee.create(req.body)
             const token = newToken(user)
-            return res.status(201).send({ token })
+            return res.status(201).json({ token })
         } else {
             console.log('role: ', role)
-            return res.status(404).send({ message: 'Invalid role' })
+            return res.status(404).json({ message: 'Invalid role' })
         }
     } catch (err) {
-        return res.status(err.status).end({ error: err.message })
+        return res.status(err.status).json({ error: err.message })
     }
 }
 
