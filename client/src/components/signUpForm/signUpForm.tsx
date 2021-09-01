@@ -1,16 +1,46 @@
 import { useState } from 'react'
 
+interface FormStateUser {
+    email: string
+    userName: string
+}
+
+interface FormStateEmployee extends FormStateUser {
+    userType: 'employee'
+    linkedIn?: string
+    twitter?: string
+    github?: string
+    portfolioLink?: string
+    resume?: File
+}
+
+interface FormStateEmployer extends FormStateUser {
+    userType: 'employer'
+    companyName: string
+    industrySector: string
+    companyWebsite: string
+    companyDescription: string
+}
+
+type FormState = FormStateEmployee | FormStateEmployer
+
 export default function SignUpForm() {
-    const [email, setEmail] = useState<string | null>(null)
-    const [userName, setUserName] = useState<string | null>(null)
+    const [formState, setFormState] = useState<FormState>({} as FormState)
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setFormState((prev) => {
+            return { ...prev, [e.target.name]: e.target.value }
+        })
+    }
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        console.log(email, userName)
+        console.log('->', formState)
     }
     return (
         <div>
+            <p>{JSON.stringify(formState)}</p>
             <form onSubmit={handleSubmit}>
                 <div className="inputWrapper">
                     <label htmlFor="email">Email: </label>
@@ -18,9 +48,7 @@ export default function SignUpForm() {
                         type="email"
                         id="email"
                         name="email"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setEmail(e.target.value)
-                        }
+                        onChange={handleChange}
                     />
                 </div>
                 <div className="inputWrapper">
@@ -29,9 +57,7 @@ export default function SignUpForm() {
                         type="text"
                         id="useName"
                         name="userName"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setUserName(e.target.value)
-                        }
+                        onChange={handleChange}
                     />
                 </div>
                 <div className="inputWrapper">
@@ -42,6 +68,7 @@ export default function SignUpForm() {
                         id="userTypeEmployee"
                         name="userType"
                         value="employee"
+                        onChange={handleChange}
                     />
                     <label htmlFor="userTypeEmployer">Employer</label>
                     <input
@@ -49,22 +76,98 @@ export default function SignUpForm() {
                         id="userTypeEmployer"
                         name="userType"
                         value="employer"
+                        onChange={handleChange}
                     />
                 </div>
-                <div className="employerWrapper">
-                    <div className="inputWrapper">
-                        <label htmlFor="companyName">Company name:</label>
-                        <input type="text" id="companyName" />
+                {formState.userType === 'employer' ? (
+                    <div className="employerWrapper">
+                        <div className="inputWrapper">
+                            <label htmlFor="companyName">Company name:</label>
+                            <input
+                                type="text"
+                                id="companyName"
+                                name="companyName"
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="inputWrapper">
+                            <label htmlFor="industrySector">
+                                Industry Sector:
+                            </label>
+                            <input
+                                type="text"
+                                id="industrySector"
+                                name="industrySector"
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="inputWrapper">
+                            <label htmlFor="companyWebsite">
+                                Company website:
+                            </label>
+                            <input
+                                type="text"
+                                id="companyWebsite"
+                                name="companyWebsite"
+                                onChange={handleChange}
+                            />
+                        </div>
                     </div>
-                    <div className="inputWrapper">
-                        <label htmlFor="industrySector">Industry Sector:</label>
-                        <input type="text" id="industrySector" />
+                ) : (
+                    ''
+                )}
+                {formState.userType === 'employee' ? (
+                    <div className="employeeWrapper">
+                        <div className="inputWrapper">
+                            <label htmlFor="github">GitHub: </label>
+                            <input
+                                type="text"
+                                name="github"
+                                id="github"
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="inputWrapper">
+                            <label htmlFor="linkedIn">LinkedIn: </label>
+                            <input
+                                type="text"
+                                name="linkedIn"
+                                id="linkedIn"
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="inputWrapper">
+                            <label htmlFor="portfolioLink">Portfolio: </label>
+                            <input
+                                type="text"
+                                name="portfolioLink"
+                                id="portfolioLink"
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="inputWrapper">
+                            <label htmlFor="twitter">Twitter: </label>
+                            <input
+                                type="text"
+                                name="twitter"
+                                id="twitter"
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="inputWrapper">
+                            <label htmlFor="resume">Resume: </label>
+                            <input
+                                type="file"
+                                name="resume"
+                                id="resume"
+                                onChange={handleChange}
+                            />
+                        </div>
                     </div>
-                    <div className="inputWrapper">
-                        <label htmlFor="companyWebsite">Company website:</label>
-                        <input type="text" id="companyWebsite" />
-                    </div>
-                </div>
+                ) : (
+                    ''
+                )}
+
                 <button type="submit">Submit</button>
             </form>
         </div>

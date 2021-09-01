@@ -1,4 +1,4 @@
-import './sass/style.scss'
+import './sass/global.scss'
 import Header from './components/header/header'
 import SignUpForm from './components/signUpForm/signUpForm'
 
