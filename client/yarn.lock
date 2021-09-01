@@ -1808,7 +1808,7 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*":
+"@types/jest@*", "@types/jest@^27.0.1":
   "integrity" "sha512-HTLpVXHrY69556ozYkcq47TtQJXpcWAWfkoqz+ZGz2JnmZhzlRjprCIyFnetSy8gpDWwTTGBcRVv1J1I1vBrHw=="
   "resolved" "https://registry.npmjs.org/@types/jest/-/jest-27.0.1.tgz"
   "version" "27.0.1"
@@ -1831,7 +1831,7 @@
   "resolved" "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.5.tgz"
   "version" "3.0.5"
 
-"@types/node@*":
+"@types/node@*", "@types/node@^16.7.10":
   "integrity" "sha512-S63Dlv4zIPb8x6MMTgDq5WWRJQe56iBEY0O3SOFA9JrRienkOVDXSXBjjJw6HTNQYSE2JI6GMCR6LVbIMHJVvA=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-16.7.10.tgz"
   "version" "16.7.10"
@@ -1851,10 +1851,31 @@
   "resolved" "https://registry.npmjs.org/@types/prettier/-/prettier-2.3.2.tgz"
   "version" "2.3.2"
 
+"@types/prop-types@*":
+  "integrity" "sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ=="
+  "resolved" "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.4.tgz"
+  "version" "15.7.4"
+
 "@types/q@^1.5.1":
   "integrity" "sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ=="
   "resolved" "https://registry.npmjs.org/@types/q/-/q-1.5.5.tgz"
   "version" "1.5.5"
+
+"@types/react-dom@^17.0.9":
+  "integrity" "sha512-wIvGxLfgpVDSAMH5utdL9Ngm5Owu0VsGmldro3ORLXV8CShrL8awVj06NuEXFQ5xyaYfdca7Sgbk/50Ri1GdPg=="
+  "resolved" "https://registry.npmjs.org/@types/react-dom/-/react-dom-17.0.9.tgz"
+  "version" "17.0.9"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react@*", "@types/react@^17.0.19":
+  "integrity" "sha512-sX1HisdB1/ZESixMTGnMxH9TDe8Sk709734fEQZzCV/4lSu9kJCPbo2PbTRoZM+53Pp0P10hYVyReUueGwUi4A=="
+  "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.19.tgz"
+  "version" "17.0.19"
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    "csstype" "^3.0.2"
 
 "@types/resolve@0.0.8":
   "integrity" "sha512-auApPaJf3NPfe18hSoJkp8EbZzer2ISk7o8mCC3M9he/a04+gbMF97NkpD2S8riMGvm4BMRI59/SZQSaLTKpsQ=="
@@ -1862,6 +1883,11 @@
   "version" "0.0.8"
   dependencies:
     "@types/node" "*"
+
+"@types/scheduler@*":
+  "integrity" "sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew=="
+  "resolved" "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
+  "version" "0.16.2"
 
 "@types/source-list-map@*":
   "integrity" "sha512-K5K+yml8LTo9bWJI/rECfIPrGgxdpeNbj+d53lwN4QjW1MCwlkhUms+gtdzigTeUyBr09+u8BwOIY3MXvHdcsA=="
@@ -3289,7 +3315,7 @@
   optionalDependencies:
     "fsevents" "^1.2.7"
 
-"chokidar@^3.4.1":
+"chokidar@^3.4.1", "chokidar@>=3.0.0 <4.0.0":
   "integrity" "sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ=="
   "resolved" "https://registry.npmjs.org/chokidar/-/chokidar-3.5.2.tgz"
   "version" "3.5.2"
@@ -3994,6 +4020,11 @@
   "version" "2.3.0"
   dependencies:
     "cssom" "~0.3.6"
+
+"csstype@^3.0.2":
+  "integrity" "sha512-jXKhWqXPmlUeoQnF/EhTtTl4C9SnrxSH/jZUih3jmO6lBKr99rP3/+FmrMj4EFpOXzMtXHAZkd3x0E6h6Fgflw=="
+  "resolved" "https://registry.npmjs.org/csstype/-/csstype-3.0.8.tgz"
+  "version" "3.0.8"
 
 "cyclist@^1.0.1":
   "integrity" "sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk="
@@ -9845,6 +9876,13 @@
     "neo-async" "^2.6.2"
     "schema-utils" "^3.0.0"
     "semver" "^7.3.2"
+
+"sass@^1.3.0", "sass@^1.38.2":
+  "integrity" "sha512-Bz1fG6qiyF0FX6m/I+VxtdVKz1Dfmg/e9kfDy2PhWOkq3T384q2KxwIfP0fXpeI+EyyETdOauH+cRHQDFASllA=="
+  "resolved" "https://registry.npmjs.org/sass/-/sass-1.38.2.tgz"
+  "version" "1.38.2"
+  dependencies:
+    "chokidar" ">=3.0.0 <4.0.0"
 
 "sax@~1.2.4":
   "integrity" "sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw=="
