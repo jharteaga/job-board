@@ -3,6 +3,7 @@ import { useState } from 'react'
 interface FormStateUser {
     email: string
     userName: string
+    password: string
 }
 
 interface FormStateEmployee extends FormStateUser {
@@ -33,10 +34,49 @@ export default function SignUpForm() {
         })
     }
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-
-        console.log('->', formState)
+        const headers: {
+            [header: string]: string
+        } = {
+            'Content-Type': 'application/json'
+        }
+        interface SocialMediaRequest {
+            twitter?: string
+            linkedin?: string
+            github?: string
+        }
+        let body: {
+            [bodyKey: string]: string | File | SocialMediaRequest
+        } = {}
+        if (formState.userType === 'employee') {
+            body = {
+                name: formState.userName,
+                email: formState.email,
+                password: formState.password,
+                role: formState.userType
+            }
+            if (formState.twitter) {
+                body = { socialMedia: { twitter: formState.twitter } }
+            }
+            if (formState.linkedIn) {
+                body = { socialMedia: { linkedin: formState.linkedIn } }
+            }
+            if (formState.github) {
+                body = { socialMedia: { github: formState.github } }
+            }
+            if (formState.portfolioLink) {
+                body = { portfolioLink: formState.portfolioLink }
+            }
+            if (formState.resume) {
+                body = { resume: formState.resume }
+            }
+        }
+        const response = await fetch('/auth/signup', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(body)
+        })
     }
     return (
         <div>
@@ -57,6 +97,15 @@ export default function SignUpForm() {
                         type="text"
                         id="useName"
                         name="userName"
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="inputWrapper">
+                    <label htmlFor="password">Password: </label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
                         onChange={handleChange}
                     />
                 </div>
