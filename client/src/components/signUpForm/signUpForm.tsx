@@ -47,8 +47,13 @@ export default function SignUpForm() {
             github?: string
         }
         let body: {
-            [bodyKey: string]: string | File | SocialMediaRequest
-        } = {}
+            name: string
+            email: string
+            password: string
+            role: string
+            socialMedia?: SocialMediaRequest
+        }
+
         if (formState.userType === 'employee') {
             body = {
                 name: formState.userName,
@@ -56,27 +61,36 @@ export default function SignUpForm() {
                 password: formState.password,
                 role: formState.userType
             }
-            if (formState.twitter) {
-                body = { socialMedia: { twitter: formState.twitter } }
+            if (formState.twitter || formState.linkedIn || formState.github) {
+                body.socialMedia = {}
+
+                if (formState.twitter) {
+                    body.socialMedia.twitter = formState.twitter
+                }
+                if (formState.linkedIn) {
+                    body.socialMedia.linkedin = formState.linkedIn
+                }
+                if (formState.github) {
+                    body.socialMedia.github = formState.github
+                }
+                // if (formState.github) {
+                //     body = { socialMedia: { github: formState.github } }
+                // }
+                // if (formState.portfolioLink) {
             }
-            if (formState.linkedIn) {
-                body = { socialMedia: { linkedin: formState.linkedIn } }
-            }
-            if (formState.github) {
-                body = { socialMedia: { github: formState.github } }
-            }
-            if (formState.portfolioLink) {
-                body = { portfolioLink: formState.portfolioLink }
-            }
-            if (formState.resume) {
-                body = { resume: formState.resume }
-            }
+            //     body = { portfolioLink: formState.portfolioLink }
+            // }
+            // if (formState.resume) {
+            //     body = { resume: formState.resume }
+            // }
+            const response = await fetch('/auth/signup', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(body)
+            })
+            const data: { [data: string]: string } = await response.json()
+            console.log(data)
         }
-        const response = await fetch('/auth/signup', {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(body)
-        })
     }
     return (
         <div>
