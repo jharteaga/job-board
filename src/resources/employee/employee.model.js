@@ -17,7 +17,7 @@ const employeeSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        required: true
+        required: false
     },
     role: {
         type: String,
@@ -34,4 +34,6 @@ const employeeSchema = new Schema({
     }
 })
 
-export const Employee = model('employee', employeeSchema)
+const Employee = model('employee', employeeSchema)
+
+module.exports = { Employee }
