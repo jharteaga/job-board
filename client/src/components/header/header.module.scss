@@ -1,10 +1,13 @@
+@import '../../sass/main.scss';
 .headerWrapper {
     position: sticky;
     top: 0;
     left: 0;
     right: 0;
     height: 7rem;
-    background-color: #f2f2f2;
+    background-color: $color_body_bg;
+    color: $color_body_text;
+    border: 2px solid $color_body_accent;
 }
 .headerContent {
     margin: 0 auto;

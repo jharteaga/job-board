@@ -1,5 +1,4 @@
-const { Schema, model, models } = require('mongoose')
-const bcrypt = require('bcrypt')
+const { Schema, model } = require('mongoose')
 
 const employeeSchema = new Schema({
     name: {
@@ -10,8 +9,7 @@ const employeeSchema = new Schema({
     email: {
         type: String,
         required: true,
-        trim: true,
-        unique: true
+        trim: true
     },
     password: {
         type: String,
@@ -39,23 +37,6 @@ const employeeSchema = new Schema({
         type: Buffer,
         required: false
     }
-})
-
-employeeSchema.path('email').validate(async function (email) {
-    const numDocs = await models.employee.countDocuments({ email })
-    return !numDocs
-}, 'Email already exists')
-
-employeeSchema.pre('save', function (next) {
-    if (!this.isModified('password')) {
-        return next()
-    }
-
-    bcrypt.hash(this.password, 10, (err, hash) => {
-        if (err) return next(err)
-        this.password = hash
-        next()
-    })
 })
 
 const Employee = model('employee', employeeSchema)
