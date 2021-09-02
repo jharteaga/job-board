@@ -1,5 +1,5 @@
 import './sass/global.scss'
-import { SignUpForm, Layout } from './components/'
+import { SignUpForm, Layout, SignInForm } from './components/'
 import { Switch, Route } from 'react-router-dom'
 
 function App(): JSX.Element {
@@ -9,6 +9,11 @@ function App(): JSX.Element {
                 <Route path="/signup">
                     <div className="App">
                         <SignUpForm />
+                    </div>
+                </Route>
+                <Route path="/signin">
+                    <div className="App">
+                        <SignInForm />
                     </div>
                 </Route>
                 <Route path="/">
