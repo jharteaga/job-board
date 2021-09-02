@@ -27,7 +27,11 @@ const signup = async (req, res) => {
             return res.status(404).json({ message: 'Invalid role' })
         }
     } catch (err) {
-        return res.status(err.status).json({ error: err.message })
+        if (err.errors?.email.message) {
+            return res.status(400).json({ error: err.errors.email.message })
+        } else {
+            return res.status(500).json({ error: err.message })
+        }
     }
 }
 
