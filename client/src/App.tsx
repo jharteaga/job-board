@@ -1,6 +1,5 @@
 import './sass/global.scss'
-import Header from './components/header/header'
-import SignUpForm from './components/signUpForm/signUpForm'
+import { Header, SignUpForm } from './components/'
 
 function App(): JSX.Element {
     return (

@@ -1,3 +1,26 @@
 .headerWrapper {
-    background-color: green;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 7rem;
+    background-color: #f2f2f2;
+}
+.headerContent {
+    margin: 0 auto;
+    max-width: 1024px;
+    height: 100%;
+    width: 90%;
+    display: grid;
+    grid-template-columns: 25% auto 25%;
+    .logoWrapper {
+        grid-column: 1 / span 1;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        img {
+            height: auto;
+            width: 4rem;
+        }
+    }
 }
