@@ -1,12 +1,23 @@
 import './sass/global.scss'
-import { Header, SignUpForm } from './components/'
+import { SignUpForm, Layout } from './components/'
+import { Switch, Route } from 'react-router-dom'
 
 function App(): JSX.Element {
     return (
-        <div className="App">
-            <Header />
-            <SignUpForm />
-        </div>
+        <Layout>
+            <Switch>
+                <Route path="/signup">
+                    <div className="App">
+                        <SignUpForm />
+                    </div>
+                </Route>
+                <Route path="/">
+                    <div className="App">
+                        <h2>Home Page</h2>
+                    </div>
+                </Route>
+            </Switch>
+        </Layout>
     )
 }
 

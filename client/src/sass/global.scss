@@ -13,6 +13,7 @@ a {
     color: inherit;
 }
 
-html {
-    background-color: red;
+body,
+#root {
+    min-height: 100vh;
 }
