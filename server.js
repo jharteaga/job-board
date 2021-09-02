@@ -11,7 +11,7 @@ dotenv.config({ path: './.env' })
 
 app.use(express.json())
 app.use(morgan('dev'))
-
+app.use(express.static('src/public'))
 app.post('/auth/signup', signup)
 
 app.get('/', (req, res) => {

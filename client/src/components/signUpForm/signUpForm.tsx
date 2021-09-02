@@ -25,7 +25,7 @@ interface FormStateEmployer extends FormStateUser {
 
 type FormState = FormStateEmployee | FormStateEmployer
 
-export default function SignUpForm() {
+export function SignUpForm() {
     const [formState, setFormState] = useState<FormState>({} as FormState)
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
