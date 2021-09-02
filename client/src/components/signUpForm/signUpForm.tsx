@@ -46,11 +46,9 @@ export default function SignUpForm() {
             linkedin?: string
             github?: string
         }
+
         let body: {
-            name: string
-            email: string
-            password: string
-            role: string
+            [key: string]: string | SocialMediaRequest | undefined
             socialMedia?: SocialMediaRequest
         }
 
@@ -73,16 +71,7 @@ export default function SignUpForm() {
                 if (formState.github) {
                     body.socialMedia.github = formState.github
                 }
-                // if (formState.github) {
-                //     body = { socialMedia: { github: formState.github } }
-                // }
-                // if (formState.portfolioLink) {
             }
-            //     body = { portfolioLink: formState.portfolioLink }
-            // }
-            // if (formState.resume) {
-            //     body = { resume: formState.resume }
-            // }
             const response = await fetch('/auth/signup', {
                 method: 'POST',
                 headers,
