@@ -220,7 +220,7 @@ export function SignUpForm() {
                     ''
                 )}
 
-                <button type="submit">Submit</button>
+                <button type="submit">Sign up</button>
             </form>
         </div>
     )
