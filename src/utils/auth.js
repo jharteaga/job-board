@@ -27,8 +27,48 @@ const signup = async (req, res) => {
             return res.status(404).json({ message: 'Invalid role' })
         }
     } catch (err) {
-        return res.status(err.status).json({ error: err.message })
+        if (err.errors?.email.message) {
+            return res.status(400).json({ error: err.errors.email.message })
+        } else {
+            return res.status(500).json({ error: err.message })
+        }
     }
 }
 
-module.exports = { signup }
+const signin = async (req, res) => {
+    const { email, password } = req.body
+
+    // Validate if email and password were provided
+    if (!email || !password) {
+        return res
+            .status(400)
+            .json({ message: 'Email and password must be provided' })
+    }
+
+    try {
+        const employee = await Employee.findOne({
+            email: req.body.email
+        }).exec()
+
+        // Validate if employee exists
+        if (!employee)
+            return res.status(404).json({ message: 'Employee not found' })
+
+        const isPasswordValid = await employee.validatePassword(
+            req.body.password
+        )
+
+        // Validate if the given password matches
+        if (!isPasswordValid)
+            return res
+                .status(401)
+                .json({ message: 'Password provided is invalid' })
+
+        const token = newToken(employee)
+        return res.status(200).json({ token })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+module.exports = { signup, signin }
