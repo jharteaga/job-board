@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const express = require('express')
 
 const { connect } = require('./src/utils/db')
-const { signup } = require('./src/utils/auth')
+const { signup, signin } = require('./src/utils/auth')
 
 const app = express()
 
@@ -12,7 +12,9 @@ dotenv.config({ path: './.env' })
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(express.static('src/public'))
+
 app.post('/auth/signup', signup)
+app.post('/auth/signin', signin)
 
 app.get('/', (req, res) => {
     res.send('Server up and running')
