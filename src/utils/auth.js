@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 const { Employee } = require('../resources/employee/employee.model')
+const { Employer } = require('../resources/employer/employer.model')
 
 dotenv.config({ path: './.env' })
 
@@ -17,21 +18,45 @@ const signup = async (req, res) => {
         return res.status(400).json({ message: 'Required fields needed' })
     }
 
+    let user
+
     try {
         if (role === 'employee') {
-            const user = await Employee.create(req.body)
-            const token = newToken(user)
-            return res.status(201).json({ token })
+            user = await Employee.create(req.body)
+        } else if (role === 'employer') {
+            user = await Employer.create(req.body)
         } else {
             console.log('role: ', role)
-            return res.status(404).json({ message: 'Invalid role' })
+            return res.status(404).json({ error: 'Invalid role' })
         }
+
+        const token = newToken(user)
+        return res.status(201).json({ token })
     } catch (err) {
-        if (err.errors?.email.message) {
+        // Duplicated email
+        if (err.errors?.email?.message) {
             return res.status(400).json({ error: err.errors.email.message })
-        } else {
-            return res.status(500).json({ error: err.message })
         }
+
+        // Company information not provided
+        if (err.errors?.company?.message) {
+            return res
+                .status(400)
+                .json({ error: 'Company information is required' })
+        }
+
+        // Company name not provided
+        if (err.errors?.['company.name']?.message) {
+            return res.status(400).json({ error: 'Company name is required' })
+        }
+
+        // Company website not provided
+        if (err.errors?.['company.website']?.message) {
+            return res
+                .status(400)
+                .json({ error: 'Company website is required' })
+        }
+        return res.status(500).json({ error: err.message })
     }
 }
 
