@@ -13,7 +13,7 @@ export function Header() {
         from: { pathname: location.pathname }
     }
 
-    const { isLoggedIn, logIn } = useContext(UserContext)
+    const { isLoggedIn, logIn, logOut, token } = useContext(UserContext)
     return (
         <header className={style.headerWrapper}>
             <div className={style.headerContent}>
@@ -22,12 +22,19 @@ export function Header() {
                 </div>
                 <div className="style.menuWrapper">
                     <button
-                        onClick={() =>
-                            logIn(() => {
-                                history.replace(from)
-                            })
-                        }
+                        onClick={() => {
+                            if (!isLoggedIn) {
+                                logIn(() => {
+                                    history.replace(from)
+                                })
+                            } else {
+                                logOut(() => {
+                                    history.replace(from)
+                                })
+                            }
+                        }}
                     >
+                        {isLoggedIn ? token : ''}
                         {isLoggedIn ? 'Logout' : 'Login'}
                     </button>
                     <nav className="style.menuItems">

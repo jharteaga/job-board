@@ -10,13 +10,13 @@ export function PrivateRoute({
     children: React.ReactNode
     path: string
 }) {
-    const { isLoggedIn } = useContext(UserContext)
+    const { token } = useContext(UserContext)
     return (
         <Route
             {...rest}
             path={path}
             render={({ location }) =>
-                isLoggedIn ? (
+                token ? (
                     children
                 ) : (
                     <Redirect
