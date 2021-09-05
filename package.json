@@ -7,7 +7,7 @@
         "start": "nodemon server",
         "client": "npm start --prefix client",
         "dev": "npm run updatedev && concurrently \"npm run start\" \"npm run client\"",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "mocha . --exit",
         "updatedev": "npm i && cd client && npm i && cd .."
     },
     "keywords": [],
@@ -23,7 +23,10 @@
         "nodemon": "^2.0.12"
     },
     "devDependencies": {
+        "chai": "^4.3.4",
         "concurrently": "^6.2.1",
+        "mocha": "^9.1.1",
+        "supertest": "^6.1.6",
         "typescript": "^4.4.2"
     }
 }
