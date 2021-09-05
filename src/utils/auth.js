@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 const { Employee } = require('../resources/employee/employee.model')
+const User = require('../resources/user/user.model')
 
 dotenv.config({ path: './.env' })
 
@@ -11,27 +12,41 @@ const newToken = (user) => {
 }
 
 const signup = async (req, res) => {
-    const { name, email, password, role } = req.body
+    const { name, email, password } = req.body
 
     if (!name || !email || !password) {
         return res.status(400).json({ message: 'Required fields needed' })
     }
 
     try {
-        if (role === 'employee') {
-            const user = await Employee.create(req.body)
-            const token = newToken(user)
-            return res.status(201).json({ token })
-        } else {
-            console.log('role: ', role)
-            return res.status(404).json({ message: 'Invalid role' })
-        }
+        const user = await User.create(req.body)
+        const token = newToken(user)
+        return res.status(201).json({ token })
     } catch (err) {
-        if (err.errors?.email.message) {
+        // Duplicated email
+        if (err.errors?.email?.message) {
             return res.status(400).json({ error: err.errors.email.message })
-        } else {
-            return res.status(500).json({ error: err.message })
         }
+
+        // Company information not provided
+        if (err.errors?.company?.message) {
+            return res
+                .status(400)
+                .json({ error: 'Company information is required' })
+        }
+
+        // Company name not provided
+        if (err.errors?.['company.name']?.message) {
+            return res.status(400).json({ error: 'Company name is required' })
+        }
+
+        // Company website not provided
+        if (err.errors?.['company.website']?.message) {
+            return res
+                .status(400)
+                .json({ error: 'Company website is required' })
+        }
+        return res.status(500).json({ error: err.message })
     }
 }
 
@@ -46,17 +61,14 @@ const signin = async (req, res) => {
     }
 
     try {
-        const employee = await Employee.findOne({
+        const user = await User.findOne({
             email: req.body.email
         }).exec()
 
-        // Validate if employee exists
-        if (!employee)
-            return res.status(404).json({ message: 'Employee not found' })
+        // Validate if user exists
+        if (!user) return res.status(404).json({ message: 'User not found' })
 
-        const isPasswordValid = await employee.validatePassword(
-            req.body.password
-        )
+        const isPasswordValid = await user.validatePassword(req.body.password)
 
         // Validate if the given password matches
         if (!isPasswordValid)
@@ -64,7 +76,7 @@ const signin = async (req, res) => {
                 .status(401)
                 .json({ message: 'Password provided is invalid' })
 
-        const token = newToken(employee)
+        const token = newToken(user)
         return res.status(200).json({ token })
     } catch (err) {
         res.status(500).json({ error: err.message })
