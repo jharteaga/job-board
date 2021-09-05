@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 const { Employee } = require('../resources/employee/employee.model')
-const { Employer } = require('../resources/employer/employer.model')
+const User = require('../resources/user/user.model')
 
 dotenv.config({ path: './.env' })
 
@@ -12,24 +12,14 @@ const newToken = (user) => {
 }
 
 const signup = async (req, res) => {
-    const { name, email, password, role } = req.body
+    const { name, email, password } = req.body
 
     if (!name || !email || !password) {
         return res.status(400).json({ message: 'Required fields needed' })
     }
 
-    let user
-
     try {
-        if (role === 'employee') {
-            user = await Employee.create(req.body)
-        } else if (role === 'employer') {
-            user = await Employer.create(req.body)
-        } else {
-            console.log('role: ', role)
-            return res.status(404).json({ error: 'Invalid role' })
-        }
-
+        const user = await User.create(req.body)
         const token = newToken(user)
         return res.status(201).json({ token })
     } catch (err) {

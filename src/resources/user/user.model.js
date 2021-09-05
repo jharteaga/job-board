@@ -35,8 +35,7 @@ const userSchema = new Schema(
             enum: ['employee', 'employer']
         },
         company: {
-            type: Map,
-            of: companySchema,
+            type: companySchema,
             required: [
                 function () {
                     return this.role === 'employer'
