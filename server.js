@@ -28,3 +28,5 @@ app.listen(process.env.PORT, async () => {
         console.error('Error starting server: ', err)
     }
 })
+
+module.exports = app
