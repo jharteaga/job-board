@@ -32,7 +32,10 @@ const userSchema = new Schema(
         role: {
             type: String,
             required: [true, 'Role is required'],
-            enum: ['employee', 'employer']
+            enum: {
+                values: ['employee', 'employer'],
+                message: '{VALUE} is not supported'
+            }
         },
         company: {
             type: companySchema,

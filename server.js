@@ -2,6 +2,7 @@ const dotenv = require('dotenv')
 const morgan = require('morgan')
 const express = require('express')
 
+const apiErrorHanlder = require('./src/middlewares/apiErrorHandler')
 const { connect } = require('./src/utils/db')
 const { signup, signin } = require('./src/utils/auth')
 
@@ -19,6 +20,8 @@ app.post('/auth/signin', signin)
 app.get('/', (req, res) => {
     res.send('Server up and running')
 })
+
+app.use(apiErrorHanlder)
 
 app.listen(process.env.PORT, async () => {
     try {

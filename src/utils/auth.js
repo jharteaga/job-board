@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
-const { Employee } = require('../resources/employee/employee.model')
+
 const User = require('../resources/user/user.model')
+const ApiError = require('../utils/ApiError')
+const messages = require('../utils/messages')
+const Response = require('../utils/Response')
 
 dotenv.config({ path: './.env' })
 
@@ -11,42 +14,28 @@ const newToken = (user) => {
     })
 }
 
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
     const { name, email, password } = req.body
 
     if (!name || !email || !password) {
-        return res.status(400).json({ message: 'Required fields needed' })
+        next(ApiError.badRequest(messages.REQUIRED_FIELDS))
+        return
     }
 
     try {
         const user = await User.create(req.body)
         const token = newToken(user)
-        return res.status(201).json({ token })
+        return res.status(201).json(new Response({ token }, {}, []))
     } catch (err) {
         // Duplicated email
         if (err.errors?.email?.message) {
-            return res.status(400).json({ error: err.errors.email.message })
+            next(ApiError.conflict(`Email ${messages.DUPLICATE_ERROR}`))
+            return
         }
 
-        // Company information not provided
-        if (err.errors?.company?.message) {
-            return res
-                .status(400)
-                .json({ error: 'Company information is required' })
-        }
-
-        // Company name not provided
-        if (err.errors?.['company.name']?.message) {
-            return res.status(400).json({ error: 'Company name is required' })
-        }
-
-        // Company website not provided
-        if (err.errors?.['company.website']?.message) {
-            return res
-                .status(400)
-                .json({ error: 'Company website is required' })
-        }
-        return res.status(500).json({ error: err.message })
+        // General validation error
+        next(ApiError.badRequest(err.message))
+        return
     }
 }
 
