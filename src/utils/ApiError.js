@@ -21,6 +21,10 @@ class ApiError extends Error {
         return new ApiError(409, message)
     }
 
+    static unsupportedMediaType(message) {
+        return new ApiError(415, message)
+    }
+
     static internalServer(message) {
         return new ApiError(500, message)
     }

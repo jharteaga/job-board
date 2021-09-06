@@ -2,7 +2,7 @@ const dotenv = require('dotenv')
 const morgan = require('morgan')
 const express = require('express')
 
-const apiErrorHanlder = require('./src/middlewares/apiErrorHandler')
+const { apiErrorHanlder, contentTypeValidation } = require('./src/middlewares')
 const { connect } = require('./src/utils/db')
 const { signup, signin } = require('./src/utils/auth')
 
@@ -13,6 +13,7 @@ dotenv.config({ path: './.env' })
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(express.static('src/public'))
+app.use(contentTypeValidation)
 
 app.post('/auth/signup', signup)
 app.post('/auth/signin', signin)
