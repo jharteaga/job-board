@@ -29,7 +29,7 @@ const signup = async (req, res, next) => {
     } catch (err) {
         // Duplicated email
         if (err.errors?.email?.message) {
-            next(ApiError.conflict(`Email ${messages.DUPLICATE_ERROR}`))
+            next(ApiError.conflict(messages.EMAIL_DUPLICATE_ERROR))
             return
         }
 
@@ -39,14 +39,13 @@ const signup = async (req, res, next) => {
     }
 }
 
-const signin = async (req, res) => {
+const signin = async (req, res, next) => {
     const { email, password } = req.body
 
     // Validate if email and password were provided
     if (!email || !password) {
-        return res
-            .status(400)
-            .json({ message: 'Email and password must be provided' })
+        next(ApiError.badRequest(messages.REQUIRED_FIELDS))
+        return
     }
 
     try {
@@ -55,20 +54,31 @@ const signin = async (req, res) => {
         }).exec()
 
         // Validate if user exists
-        if (!user) return res.status(404).json({ message: 'User not found' })
+        if (!user) {
+            next(ApiError.notFound(messages.USER_NOT_FOUND))
+            return
+        }
 
         const isPasswordValid = await user.validatePassword(req.body.password)
 
         // Validate if the given password matches
-        if (!isPasswordValid)
-            return res
-                .status(401)
-                .json({ message: 'Password provided is invalid' })
+        if (!isPasswordValid) {
+            next(ApiError.notAuthorized(messages.NOT_AUTH))
+            return
+        }
 
         const token = newToken(user)
-        return res.status(200).json({ token })
+        return res
+            .status(200)
+            .json(
+                new Response(
+                    { token },
+                    { name: user.name, email: user.email, role: user.role },
+                    []
+                )
+            )
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        next(ApiError.internalServer(err.message))
     }
 }
 
