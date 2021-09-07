@@ -12,11 +12,7 @@ const app = express()
 
 dotenv.config({ path: './.env' })
 
-app.use(
-    '/api-docs',
-    swaggerUI.serve,
-    swaggerUI.setup(specs, { explorer: true })
-)
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(express.static('src/public'))
