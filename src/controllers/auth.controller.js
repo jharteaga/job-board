@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 
-const User = require('../resources/user/user.model')
+const User = require('../models/user.model')
 const ApiError = require('../utils/ApiError')
 const messages = require('../utils/messages')
 const Response = require('../utils/Response')
